@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="/static/layout.css" type="text/css"/>
+</head>
+<body>
+<div id="container">
+    <div id="dom">
+        <h1>Calculate MPG from last fuel up</h1>
+        <div id="userform">
+        <form method="post">
+            <label>Model of Car</label>
+            <input name="car" type="text">
+            <br>
+            <label>Litres of fuel:</label>
+            <input name="fuel_quantity" type="number">
+            <br>
+            <label>Miles Driven</label>
+            <input name="miles_driven" type="number">
+            <br>
+            <input type="submit" value="calculate">
+        </form>
+        <br>
+        <h2>Calculated MPG:</h2>
+        <p>{{mpg}}</p>
+        </div>
+        <br>
+        <h2>Overall Average MPG:</h2>
+        <div id="average_mpg">
+            <p>{{mpg}}</p>
+        </div>
+        <br>
+        <h2>Historic Records</h2><br>
+        <div id="history">
+            <ol>
+
+             <li>{{mpg}} </li>
+
+            </ol>
+        </div>
+        </div>
+</div>
+
+</body>
+</html>
