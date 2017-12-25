@@ -75,8 +75,9 @@ def insert_record(registration, mileage):
             # Write a single record
             user_id = get_vehicle_owner_id_by_registration(registration)
             vehicle_id = get_vehicle_id_by_registration(registration)
-            sql = "INSERT INTO records (user_id, vehicle_id, mileage) VALUES (%d, %d, %d)"
+            sql = "INSERT INTO records (user_id, vehicle_id, mileage) VALUES (%s, %s, %s)"
             cursor.execute(sql,(user_id, vehicle_id, mileage))
+            connection.commit()
     finally:
         connection.close()
 
@@ -87,14 +88,13 @@ def get_vehicle_list():
             sql = "SELECT make, model, year_of_manufacture FROM vehicles"
             cursor.execute(sql)
             result = cursor.fetchall()
-            print result
             return result
     finally:
         connection.close()
 
 get_vehicle_id_by_name('Celica')
 get_vehicle_name_by_id(2)
-get_vehicle_id_by_registration("AFZ6652")
-get_vehicle_owner_id_by_registration("SUI5998")
-# get_vehicle_list()
-#insert_record("AFZ6652", 32.5)
+print get_vehicle_id_by_registration("AFZ6652")
+print get_vehicle_owner_id_by_registration("SUI5998")
+get_vehicle_list()
+insert_record("AFZ6652", 32.5)
