@@ -11,8 +11,8 @@
         <h1>Calculate MPG from last fuel up</h1>
         <div id="userform">
         <form method="post">
-            <label>Model of Car</label>
-            <input name="car" type="text">
+            <label>Enter your Registration</label>
+            <input name="registration" type="text" required>
             <br>
             <label>Litres of fuel:</label>
             <input name="fuel_quantity" type="number">
@@ -24,20 +24,20 @@
         </form>
         <br>
         <h2>Calculated MPG:</h2>
-        <p>{{mpg}}</p>
+        <p>{{result['calculated_mpg']}}</p>
         </div>
         <br>
         <h2>Overall Average MPG:</h2>
         <div id="average_mpg">
-            <p>{{mpg}}</p>
+            <p>{{result['average_mpg']}}</p>
         </div>
         <br>
         <h2>Historic Records</h2><br>
         <div id="history">
             <ol>
-
-             <li>{{mpg}} </li>
-
+                {% for item in result['historic_mpg']%}
+             <li>{{item['mileage']}}</li>
+                {% endfor %}
             </ol>
         </div>
         </div>

@@ -6,8 +6,11 @@
 </head>
 <body>
 <div id="vehicle">
-            {{vehicle_name}}
+    <ol>
+    {% for item in result %}
+       <li> {{item['mileage']}}</li>
+    {%endfor%}
+        </ol>
         </div>
-
 </body>
 </html>

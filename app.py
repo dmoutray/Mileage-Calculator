@@ -1,29 +1,30 @@
 import cherrypy
-import pymysql.cursors
-import webapp.database.dbconnect
 import webapp.database.calculatorDAO
+import webapp.database.vehiclesDAO
 from jinja2 import Environment, FileSystemLoader
 from webapp.web.calculator import Calculator
-from webapp.web.register import Register
 
 class MPGCalculator(object):
 
     def __init__(self):
         self.env = Environment(loader=FileSystemLoader('templates'))
         self.calculator = Calculator()
-        self.register = Register()
         self.calculator_dao = webapp.database.calculatorDAO.CalculatorDAO()
-        self.connection = webapp.database.dbconnect.DBConfig.connection
+        self.vehicle_dao = webapp.database.vehiclesDAO.VehiclesDAO()
 
     @cherrypy.expose
     def index(self, **kwargs):
         tmpl = self.env.get_template('index.html')
         if kwargs:
             if kwargs.get("fuel_quantity") != "" and kwargs.get("miles_driven") != "":
+                result = {}
                 fuel_quantity = kwargs.get("fuel_quantity")
-                miles_driven = kwargs.get("fuel_quantity")
-                mpg = self.calculator.calculate_mpg(fuel_quantity, miles_driven)
-                return tmpl.render(mpg = mpg)
+                miles_driven = kwargs.get("miles_driven")
+                result['calculated_mpg'] = self.calculator.calculate_mpg(fuel_quantity, miles_driven)
+                vehicle_id = self.vehicle_dao.get_vehicle_id_by_registration(kwargs.get("registration"))
+                result['average_mpg'] = self.calculator_dao.get_average_mpg_by_vehicle_id(vehicle_id)
+                result['historic_mpg'] = self.vehicle_dao.get_all_mpgs_by_vehicle_id(vehicle_id)
+                return tmpl.render(result = result)
 
             return tmpl.render(mpg = "please enter an MPG")
         else:
@@ -32,8 +33,8 @@ class MPGCalculator(object):
     @cherrypy.expose
     def database(self):
         tmpl = self.env.get_template('database.html')
-        vehicle_name = self.calculator_dao.get_vehicle_id_by_name("Celica")
-        return tmpl.render(vehicle_name = vehicle_name)
+        result = self.calculator_dao.get_all_mpgs_by_vehicle_id(1)
+        return tmpl.render(result = result)
 
     @cherrypy.expose
     def login(self, **kwargs):

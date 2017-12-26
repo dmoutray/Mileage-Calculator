@@ -1,11 +1,10 @@
 import webapp.database.dbconnect as dbconnect
 
-class CalculatorDAO():
+class VehiclesDAO():
+
     def __init__(self):
         self.dbconfig = dbconnect.DBConfig()
         self.connection = self.dbconfig.connection
-        calculator_dao = CalculatorDAO()
-        connection = calculator_dao.connection
 
     def get_vehicle_id_by_name(self, vehicle_name):
         try:
@@ -14,7 +13,7 @@ class CalculatorDAO():
                 sql = "SELECT vehicle_id FROM vehicles WHERE model = %s"
                 cursor.execute(sql, (vehicle_name))
                 result = cursor.fetchone()
-                print vehicle_name, "vehicle ID is ", result['vehicle_id']
+                return result['vehicle_id']
         except Exception as e:
             print(e)
 
@@ -82,16 +81,29 @@ class CalculatorDAO():
                 sql = "INSERT INTO records (user_id, vehicle_id, mileage) VALUES (%s, %s, %s)"
                 cursor.execute(sql,(user_id, vehicle_id, mileage))
                 self.connection.commit()
-        finally:
-            self.connection.close()
+        except Exception as e:
+            print(e)
 
     def get_vehicle_list(self):
         try:
-            with self.connection.cursor() as cursor:
-                # Write a single record
+            with self.connection as cursor:
+                # Read multiple records
                 sql = "SELECT make, model, year_of_manufacture FROM vehicles"
                 cursor.execute(sql)
                 result = cursor.fetchall()
                 return result
-        finally:
-            self.connection.close()
+        except Exception as e:
+            print(e)
+
+    def get_all_mpgs_by_vehicle_id(self, vehicle_id):
+        try:
+            with self.connection.cursor() as cursor:
+                # Write a single record
+                sql = "SELECT mileage FROM records WHERE vehicle_id = %s"
+                cursor.execute(sql, (vehicle_id))
+                result = cursor.fetchall()
+                return result
+        except Exception as e:
+            print e
+
+

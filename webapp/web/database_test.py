@@ -1,7 +1,7 @@
-from webapp.database.calculatorDAO import CalculatorDAO
+from webapp.database.dbconnect import DBConfig
 
-calculator_dao = CalculatorDAO()
-connection = calculator_dao.connection
+dbconfig = DBConfig()
+connection = dbconfig.connection
 
 def get_vehicle_id_by_name(vehicle_name):
     try:
@@ -10,7 +10,7 @@ def get_vehicle_id_by_name(vehicle_name):
             sql = "SELECT vehicle_id FROM vehicles WHERE model = %s"
             cursor.execute(sql, (vehicle_name))
             result = cursor.fetchone()
-            print vehicle_name, "vehicle ID is ", result['vehicle_id']
+            return result
     except Exception as e:
         print(e)
 
@@ -78,8 +78,8 @@ def insert_record(registration, mileage):
             sql = "INSERT INTO records (user_id, vehicle_id, mileage) VALUES (%s, %s, %s)"
             cursor.execute(sql,(user_id, vehicle_id, mileage))
             connection.commit()
-    finally:
-        connection.close()
+    except Exception as e:
+        print(e)
 
 def get_vehicle_list():
     try:
@@ -89,12 +89,12 @@ def get_vehicle_list():
             cursor.execute(sql)
             result = cursor.fetchall()
             return result
-    finally:
-        connection.close()
+    except Exception as e:
+        print(e)
 
-get_vehicle_id_by_name('Celica')
-get_vehicle_name_by_id(2)
+print get_vehicle_id_by_name('Celica')
+print get_vehicle_name_by_id(2)
 print get_vehicle_id_by_registration("AFZ6652")
 print get_vehicle_owner_id_by_registration("SUI5998")
-get_vehicle_list()
+print get_vehicle_list()
 insert_record("AFZ6652", 32.5)

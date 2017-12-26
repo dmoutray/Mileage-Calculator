@@ -5,34 +5,15 @@ class CalculatorDAO():
         self.dbconfig = dbconnect.DBConfig()
         self.connection = self.dbconfig.connection
 
-    def insert_record(self, user_id, vehicle_id, mileage):
+    def get_average_mpg_by_vehicle_id(self, vehicle_id):
         try:
             with self.connection.cursor() as cursor:
-                # Read a single record
-                sql = "INSERT INTO records (user_id, vehicle_id, mileage) VALUES (%d, %d, %d)"
-                cursor.execute(sql,(user_id, vehicle_id, mileage))
-        finally:
-            self.connection.close()
-
-    def get_vehicle_id_by_name(self, vehicle_name):
-        try:
-            with self.connection.cursor() as cursor:
-                # Read a single record
-                sql = "SELECT vehicle_id FROM vehicles WHERE model = %s"
-                cursor.execute(sql,(vehicle_name))
+                # Write a single record
+                sql = "SELECT AVG(mileage) FROM records WHERE vehicle_id = %s"
+                cursor.execute(sql, (vehicle_id))
                 result = cursor.fetchone()
-                return result
-        except Exception as e:
-            print(e)
+                return result['AVG(mileage)']
 
-    def get_vehicle_id_by_registration(self, registration):
-        try:
-            with self.connection.cursor() as cursor:
-                # Read a single record
-                sql = "SELECT vehicle_id FROM users WHERE registration = %s"
-                cursor.execute(sql, (registration))
-                result = cursor.fetchone()
-                return result
         except Exception as e:
-            print(e)
+            print e
 
