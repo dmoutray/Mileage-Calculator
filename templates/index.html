@@ -7,6 +7,11 @@
 </head>
 <body>
 <div id="container">
+    <div id="notifications">
+        {%if notification%}
+        {{notification}}
+        {%endif%}
+    </div>
     <div id="dom">
         <h1>Calculate MPG from last fuel up</h1>
         <div id="userform">

@@ -80,9 +80,19 @@ form input{
     margin:10px auto;
 }
 
-#history ol{
-	list-style: decimal ;
+#history{
+	width:100px;
+	margin: auto;
 }
+
+#history ol{
+	list-style: decimal;
+}
+
+#notifications{
+	margin:0 auto;
+}
+
 
 
 

@@ -22,11 +22,13 @@ class MPGCalculator(object):
                 miles_driven = kwargs.get("miles_driven")
                 result['calculated_mpg'] = self.calculator.calculate_mpg(fuel_quantity, miles_driven)
                 vehicle_id = self.vehicle_dao.get_vehicle_id_by_registration(kwargs.get("registration"))
-                result['average_mpg'] = self.calculator_dao.get_average_mpg_by_vehicle_id(vehicle_id)
-                result['historic_mpg'] = self.vehicle_dao.get_all_mpgs_by_vehicle_id(vehicle_id)
-                return tmpl.render(result = result)
-
-            return tmpl.render(mpg = "please enter an MPG")
+                if vehicle_id:
+                    result['average_mpg'] = self.calculator_dao.get_average_mpg_by_vehicle_id(vehicle_id)
+                    result['historic_mpg'] = self.vehicle_dao.get_all_mpgs_by_vehicle_id(vehicle_id)
+                    return tmpl.render(result=result)
+                else:
+                    return tmpl.render(result = "", notification = "No car found with that registration")
+            return tmpl.render(result = "", notification = "Please fill in all fields")
         else:
             return tmpl.render(result = "")
 
