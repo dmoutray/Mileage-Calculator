@@ -1,3 +1,4 @@
+# Import database connection string
 import webapp.database.dbconnect as dbconnect
 
 class UserDAO():
@@ -6,8 +7,8 @@ class UserDAO():
         self.dbconfig = dbconnect.DBConfig()
         self.connection = self.dbconfig.connection
 
+    # Create a new user and add to the DB
     def create_new_user(self, user_details):
-
         try:
             with self.connection.cursor() as cursor:
                 # Write a single record

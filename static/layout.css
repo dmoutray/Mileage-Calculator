@@ -83,6 +83,7 @@ form input{
 #history{
 	width:100px;
 	margin: auto;
+	padding-left: 42px;
 }
 
 #history ol{
