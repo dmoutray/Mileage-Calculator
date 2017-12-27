@@ -18,6 +18,7 @@ class UserDAO():
                 password = user_details['password']
                 cursor.execute(sql, (firstname, lastname, email, password))
                 self.connection.commit()
+                cursor.close()
         except Exception as e:
             print(e)
 
@@ -28,6 +29,7 @@ class UserDAO():
                 sql = "SELECT user_id  FROM users WHERE email = %s"
                 cursor.execute(sql, (email))
                 result = cursor.fetchone()
+                cursor.close()
                 return result['user_id']
         except Exception as e:
             print(e)

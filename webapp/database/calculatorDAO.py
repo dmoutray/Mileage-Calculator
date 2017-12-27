@@ -12,6 +12,7 @@ class CalculatorDAO():
                 sql = "SELECT AVG(mileage) FROM records WHERE vehicle_id = %s"
                 cursor.execute(sql, (vehicle_id))
                 result = cursor.fetchone()
+                cursor.close()
                 return result['AVG(mileage)']
 
         except Exception as e:

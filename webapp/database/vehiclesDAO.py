@@ -15,6 +15,7 @@ class VehiclesDAO():
                 sql = "SELECT vehicle_id FROM vehicles WHERE model = %s"
                 cursor.execute(sql, (vehicle_name))
                 result = cursor.fetchone()
+                cursor.close()
                 return result['vehicle_id']
         except Exception as e:
             print(e)
@@ -30,6 +31,7 @@ class VehiclesDAO():
                 make = result['make']
                 model = result['model']
                 result_string = year_of_manufacture + " " + make + " " + model
+                cursor.close()
                 return result_string
         except Exception as e:
             print(e)
@@ -41,7 +43,8 @@ class VehiclesDAO():
                 sql = "SELECT make, model FROM vehicles JOIN vehicle_owners using(vehicle_id) WHERE registration = %s"
                 cursor.execute(sql, (registration))
                 result = cursor.fetchone()
-                print "Car with registration of", registration, "is a " + result['make'], result['model']
+                cursor.close()
+                return result['vehicle_id']
         except Exception as e:
             print(e)
 
@@ -52,6 +55,7 @@ class VehiclesDAO():
                 sql = "SELECT user_id FROM vehicle_owners WHERE registration = %s"
                 cursor.execute(sql, (registration))
                 result = cursor.fetchone()
+                cursor.close()
                 return result['user_id']
         except Exception as e:
             print(e)
@@ -63,6 +67,7 @@ class VehiclesDAO():
                 sql = "SELECT vehicle_id FROM vehicle_owners WHERE registration = %s"
                 cursor.execute(sql, (registration))
                 result = cursor.fetchone()
+                cursor.close()
                 return result['vehicle_id']
         except Exception as e:
             print(e)
@@ -74,6 +79,7 @@ class VehiclesDAO():
                 sql = "SELECT user_id FROM vehicle_owners WHERE registration = %s"
                 cursor.execute(sql, (registration))
                 result = cursor.fetchone()
+                cursor.close()
                 return result['user_id']
         except Exception as e:
             print(e)
@@ -86,6 +92,7 @@ class VehiclesDAO():
                 vehicle_id = self.get_vehicle_id_by_registration(registration)
                 sql = "INSERT INTO records (user_id, vehicle_id, mileage) VALUES (%s, %s, %s)"
                 cursor.execute(sql,(user_id, vehicle_id, mileage))
+                cursor.close()
                 self.connection.commit()
         except Exception as e:
             print(e)
@@ -97,6 +104,7 @@ class VehiclesDAO():
                 sql = "SELECT make, model, year_of_manufacture FROM vehicles"
                 cursor.execute(sql)
                 result = cursor.fetchall()
+                cursor.close()
                 return result
         except Exception as e:
             print(e)
@@ -108,6 +116,7 @@ class VehiclesDAO():
                 sql = "SELECT mileage FROM records WHERE vehicle_id = %s"
                 cursor.execute(sql, (vehicle_id))
                 result = cursor.fetchall()
+                cursor.close()
                 return result
         except Exception as e:
             print e
@@ -122,6 +131,7 @@ class VehiclesDAO():
                 year_of_manufacture = vehicle_details['year_of_manufacture']
                 fuel_type = vehicle_details['fuel_type']
                 cursor.execute(sql, (make, model, year_of_manufacture, fuel_type))
+                cursor.close()
                 self.connection.commit()
         except Exception as e:
             print(e)
@@ -133,6 +143,7 @@ class VehiclesDAO():
                 sql = "SELECT MAX(vehicle_id) FROM vehicles"
                 cursor.execute(sql)
                 result = cursor.fetchone()
+                cursor.close()
                 return result['MAX(vehicle_id)']
         except Exception as e:
             print(e)
@@ -147,6 +158,7 @@ class VehiclesDAO():
                 registration = owner_details['registration']
                 vehicle_id = self.get_last_vehicle_added()
                 cursor.execute(sql, (user_id, vehicle_id, registration))
+                cursor.close()
                 self.connection.commit()
         except Exception as e:
             print(e)
