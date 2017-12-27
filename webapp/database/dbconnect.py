@@ -6,5 +6,6 @@ class DBConfig():
                                   password='4security',
                                   db='fuel_calculator',
                                   charset='utf8mb4',
-                                  cursorclass=pymysql.cursors.DictCursor)
+                                  cursorclass=pymysql.cursors.DictCursor
+                                 )
 

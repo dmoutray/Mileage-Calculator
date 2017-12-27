@@ -1,10 +1,12 @@
 import webapp.database.dbconnect as dbconnect
+import webapp.database.userDAO as userDAO
 
 class VehiclesDAO():
 
     def __init__(self):
         self.dbconfig = dbconnect.DBConfig()
         self.connection = self.dbconfig.connection
+        self.user_dao = userDAO.UserDAO()
 
     def get_vehicle_id_by_name(self, vehicle_name):
         try:
@@ -21,10 +23,14 @@ class VehiclesDAO():
         try:
             with self.connection.cursor() as cursor:
                 # Read a single record
-                sql = "SELECT make, model FROM vehicles WHERE vehicle_id = %s"
+                sql = "SELECT year_of_manufacture, make, model FROM vehicles WHERE vehicle_id = %s"
                 cursor.execute(sql, (vehicle_id))
                 result = cursor.fetchone()
-                print "Car with ID of", vehicle_id, "is a " + result['make'], result['model']
+                year_of_manufacture = str(result['year_of_manufacture'])
+                make = result['make']
+                model = result['model']
+                result_string = year_of_manufacture + " " + make + " " + model
+                return result_string
         except Exception as e:
             print(e)
 
@@ -105,5 +111,45 @@ class VehiclesDAO():
                 return result
         except Exception as e:
             print e
+
+    def add_vehicle(self, vehicle_details):
+        try:
+            with self.connection.cursor() as cursor:
+                # Write a single record
+                sql = "INSERT INTO vehicles (make, model, year_of_manufacture, fuel) VALUES (%s, %s, %s, %s)"
+                make = vehicle_details['make']
+                model = vehicle_details['model']
+                year_of_manufacture = vehicle_details['year_of_manufacture']
+                fuel_type = vehicle_details['fuel_type']
+                cursor.execute(sql, (make, model, year_of_manufacture, fuel_type))
+                self.connection.commit()
+        except Exception as e:
+            print(e)
+
+    def get_last_vehicle_added(self):
+        try:
+            with self.connection.cursor() as cursor:
+                # Write a single record
+                sql = "SELECT MAX(vehicle_id) FROM vehicles"
+                cursor.execute(sql)
+                result = cursor.fetchone()
+                return result['MAX(vehicle_id)']
+        except Exception as e:
+            print(e)
+
+    def claim_ownership_of_vehicle(self, owner_details):
+        try:
+            with self.connection.cursor() as cursor:
+                # Write a single record
+                sql = "INSERT INTO vehicle_owners (user_id, vehicle_id, registration) VALUES (%s, %s, %s)"
+                email = owner_details['email']
+                user_id = self.user_dao.get_userid_by_email(email)
+                registration = owner_details['registration']
+                vehicle_id = self.get_last_vehicle_added()
+                cursor.execute(sql, (user_id, vehicle_id, registration))
+                self.connection.commit()
+        except Exception as e:
+            print(e)
+
 
 
