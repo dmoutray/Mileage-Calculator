@@ -37,18 +37,18 @@ FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
 INSERT into users (firstname,lastname,email,password) VALUES
-("David","Moutray","m00ts@live.co.uk","pass1234"),
-("John","Moutray","jmoutray@dfpni.gov.uk","jmoutray01"),
-("Helen","Moutray","hmoutray@live.co.uk","stranmillis");
+("David","Jason","djason@example.co.uk","pass1234"),
+("John","Gardner","j-gardner@example.gov.uk","pass4321"),
+("Helen","Anderson","handerson2003@live.com","pass5678");
 
 INSERT into vehicles (make,model,year_of_manufacture,fuel) VALUES
  ("Toyota","Celica","2005","petrol"),
- ("Nissan","Qashqai+2","2014","diesel"),
- ("Nissan","Micra","2008","petrol");
+ ("Nissan","Skyline","2014","petrol"),
+ ("Land Rover","Evoque","2015","petrol");
 
 INSERT INTO vehicle_owners (registration,user_id, vehicle_id) VALUES
-("AFZ6652",1,1),
-("NFZ6128",2,2),
-("SUI5998",3,3);
+("GFZ2003",1,1),
+("XFZ6128",2,2),
+("FEZ5998",3,3);
 
 INSERT into records (user_id, vehicle_id, mileage) VALUES (1,1,34.20);
